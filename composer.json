@@ -1,0 +1,20 @@
+{
+    "name": "joseaugustolimajesus/handle-env-laravel",
+    "description": "Change environment variables simply and quickly",
+    "keywords": ["env","dotenv","laravel","php"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "José Augusto",
+            "email": "joseaugustolimajesus@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "JoseAugusto\\App\\": "jose-augusto/app/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+    }
+}
