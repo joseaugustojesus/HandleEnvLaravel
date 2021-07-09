@@ -46,4 +46,40 @@ class HandleEnv
 
         return false;
     }
+
+
+    /**
+     * @param string $key
+     * @param string $fileDir
+     *
+     * @return array
+     */
+    public static function get($key, $fileDir)
+    {
+        if (!empty($key) && $key !== "") {
+            $fileExists = file_exists($fileDir);
+            $env = file_get_contents($fileDir);
+            $env = preg_split('/\s+/', $env);
+
+
+            $value = array_filter($env,  function ($variable) use($key){
+                $xVariable = explode("=", $variable);
+                if(is_array($xVariable)){
+                    return $xVariable[0] === $key ?  true : false;
+                }
+            });
+
+            $variable = [];
+            if(count($value) > 0){
+                $value = explode("=", $value[0]);
+                $variable["key"] = $value[0];
+                $variable["value"] = $value[1];
+            }else{
+                $variable["key"] = "This key not founded in {$fileDir}";
+                $variable["value"] = null;
+            }
+
+            return $variable;
+        }
+    }
 }
