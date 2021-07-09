@@ -34,7 +34,6 @@ class HandleEnv
                                 $xEnv[1] = $xEnv[1];
                             }
                             $xEnv = implode("=", $xEnv);
-                            // dd($xEnv);
                             $env[$key] = $xEnv;
                         }
                     }
