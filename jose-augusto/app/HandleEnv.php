@@ -53,7 +53,7 @@ class HandleEnv
      * @param string $key
      * @param string $fileDir
      *
-     * @return array
+     * @return array|string
      */
     public static function getOne($key, $fileDir)
     {
@@ -79,14 +79,16 @@ class HandleEnv
                     $variable["key"] = $value[0];
                     $variable["value"] = $value[1];
                 } else {
-                    $variable["key"] = "This key not founded in {$fileDir}";
+                    $variable["key"] = "This key not founded in {$fileDir}.";
                     $variable["value"] = null;
                 }
 
                 return $variable;
             } else {
-                return "The .env file could not be found in the specified path";
+                return "The .env file could not be found in the specified path.";
             }
+        }else{
+            return "unspecified key.";
         }
     }
 
@@ -168,6 +170,23 @@ class HandleEnv
             }
         } else {
             return "Cannot search for keys without .env file path";
+        }
+    }
+
+
+    /**
+     * @param string $key
+     * @param string $fileDir
+     *
+     * @return boolean
+     */
+    public static function hasKey($key, $fileDir){
+        if(!empty($key)){
+            $keys = self::getAllKeys($fileDir);
+            if(is_array($keys)) return in_array($key, $keys);
+            else return false;
+        }else{
+            return false;
         }
     }
 }
