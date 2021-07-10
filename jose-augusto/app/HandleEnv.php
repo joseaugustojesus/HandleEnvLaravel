@@ -158,7 +158,9 @@ class HandleEnv
 
                 return array_filter(array_map(function ($item) {
                     $xItem = explode("=", $item);
-                    if (count($xItem) === 2) return explode("=", $item);
+                    if (count($xItem) === 2) {
+                        return ["key" => $xItem[0], "value" => $xItem[1]];
+                    }
                     else return [];
                 }, $env));
             } else {
