@@ -18,23 +18,23 @@ class HandleEnv
 
             if ($fileExists) {
                 $env = file_get_contents($fileDir);
-                $env = preg_split('/\s+/', $env);
+                $env = array_filter(preg_split('/\n+/', $env));
 
 
                 foreach ($values as $xValues) {
                     $xValues = explode("=", $xValues, 2);
-
-                    foreach ($env as $key => $xEnv) {
-                        if ($xEnv !== "" && $xEnv !== "\n") {
-
-                            $xEnv = explode("=", $xEnv, 2);
-                            if ($xEnv[0] === $xValues[0]) {
-                                $xEnv[1] = $xValues[1];
-                            } else {
-                                $xEnv[1] = $xEnv[1];
+                    if (count($xValues) === 2) {
+                        foreach ($env as $key => $xEnv) {
+                            if ($xEnv !== "" && $xEnv !== "\n") {
+                                $xEnv = explode("=", $xEnv, 2);
+                                if (count($xEnv) === 2) {
+                                    if ($xEnv[0] === $xValues[0]) {
+                                        $xEnv[1] = $xValues[1];
+                                    }
+                                    $xEnv = implode("=", $xEnv);
+                                    $env[$key] = $xEnv;
+                                }
                             }
-                            $xEnv = implode("=", $xEnv);
-                            $env[$key] = $xEnv;
                         }
                     }
                 }
@@ -64,14 +64,13 @@ class HandleEnv
             if ($fileExists) {
 
                 $env = file_get_contents($fileDir);
-                $env = preg_split('/\s+/', $env);
-
-                $value = array_filter($env,  function ($variable) use ($key) {
+                $env = array_filter(preg_split('/\n+/', $env));
+                $value = array_values(array_filter($env,  function ($variable) use ($key) {
                     $xVariable = explode("=", $variable);
                     if (is_array($xVariable)) {
                         return $xVariable[0] === $key ?  true : false;
                     }
-                });
+                }));
 
                 $variable = [];
                 if (count($value) > 0) {
@@ -87,7 +86,7 @@ class HandleEnv
             } else {
                 return "The .env file could not be found in the specified path.";
             }
-        }else{
+        } else {
             return "unspecified key.";
         }
     }
@@ -104,7 +103,7 @@ class HandleEnv
             if ($fileExists) {
 
                 $env = file_get_contents($fileDir);
-                $env = preg_split('/\s+/', $env);
+                $env = array_filter(preg_split('/\n+/', $env));
                 return array_filter(array_map(function ($item) {
                     return explode("=", $item)[0];
                 }, $env));
@@ -116,7 +115,7 @@ class HandleEnv
         }
     }
 
-   /**
+    /**
      * @param string $fileDir
      *
      * @return array|string
@@ -128,7 +127,7 @@ class HandleEnv
             if ($fileExists) {
 
                 $env = file_get_contents($fileDir);
-                $env = preg_split('/\s+/', $env);
+                $env = array_filter(preg_split('/\n+/', $env));
 
                 return array_filter(array_map(function ($item) {
                     $xItem = explode("=", $item);
@@ -155,15 +154,14 @@ class HandleEnv
             if ($fileExists) {
 
                 $env = file_get_contents($fileDir);
-                $env = array_filter(preg_split('/\s+/', $env));
+                $env = array_filter(preg_split('/\n+/', $env));
 
 
                 return array_filter(array_map(function ($item) {
                     $xItem = explode("=", $item);
                     if (count($xItem) === 2) {
                         return ["key" => $xItem[0], "value" => $xItem[1]];
-                    }
-                    else return [];
+                    } else return [];
                 }, $env));
             } else {
                 return "The .env file could not be found in the specified path";
@@ -180,12 +178,13 @@ class HandleEnv
      *
      * @return boolean
      */
-    public static function hasKey($key, $fileDir){
-        if(!empty($key)){
+    public static function hasKey($key, $fileDir)
+    {
+        if (!empty($key)) {
             $keys = self::getAllKeys($fileDir);
-            if(is_array($keys)) return in_array($key, $keys);
+            if (is_array($keys)) return in_array($key, $keys);
             else return false;
-        }else{
+        } else {
             return false;
         }
     }
