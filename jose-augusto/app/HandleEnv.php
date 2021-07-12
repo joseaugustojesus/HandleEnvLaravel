@@ -188,4 +188,42 @@ class HandleEnv
             return false;
         }
     }
+
+
+    public static function add($key, $value, $fileDir)
+    {
+        $fileExists = file_exists($fileDir);
+
+
+        if ($fileExists && !empty($key) && !empty($value)) {
+            if (!self::hasKey($key, $fileDir)) {
+                $env = file_get_contents($fileDir);
+                $env = array_filter(preg_split('/\n+/', $env));
+                $env[] = "$key=$value";
+                $env = implode("\n", $env);
+                file_put_contents($fileDir, $env);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static function delete($key, $fileDir)
+    {
+        $fileExists = file_exists($fileDir);
+        if ($fileExists && !empty($key)) {
+            if (self::hasKey($key, $fileDir)) {
+                $env = file_get_contents($fileDir);
+                $env = array_filter(preg_split('/\n+/', $env));
+                $founded = array_search($key, self::getAllKeys($fileDir));
+                if ($founded) {
+                    unset($env[$founded]);
+                    $env = implode("\n", $env);
+                    file_put_contents($fileDir, $env);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
