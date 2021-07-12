@@ -86,6 +86,45 @@ $hasKey = HandleEnv::hasKey("APP_NAME", base_path(".env"));
 
 ```
 
+#### To check if key exists
+```php
+<?php
+
+use JoseAugusto\App\HandleEnv;
+
+/*
+* @var boolean
+*/
+$hasKey = HandleEnv::hasKey("APP_NAME", base_path(".env"));
+
+```
+
+#### To add variable
+```php
+<?php
+
+use JoseAugusto\App\HandleEnv;
+
+/*
+* @var boolean
+*/
+$hasKey = HandleEnv::add("APP_X", "\"My Application\"", base_path(".env"));
+
+```
+
+#### To deete variable
+```php
+<?php
+
+use JoseAugusto\App\HandleEnv;
+
+/*
+* @var boolean
+*/
+$hasKey = HandleEnv::delete("APP_X", base_path(".env"));
+
+```
+
 
 ## Requirements
 This library needs PHP 7.0 or greater.
