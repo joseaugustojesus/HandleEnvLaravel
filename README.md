@@ -112,7 +112,7 @@ $hasKey = HandleEnv::add("APP_X", "\"My Application\"", base_path(".env"));
 
 ```
 
-#### To deete variable
+#### To delete variable
 ```php
 <?php
 
